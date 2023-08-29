@@ -19,6 +19,15 @@ class ProductsService {
     this.products.push(product);
   }
 
+  createProduct(product) {
+    const newProduct = {
+      id: faker.datatype.uuid(),
+      ...product,
+    };
+    this.products.push(newProduct);
+    return newProduct;
+  }
+
   getProducts() {
     return this.products;
   }
@@ -27,13 +36,26 @@ class ProductsService {
     return this.products.find((product) => product.id === id);
   }
 
-  updateProductById(id, product) {
+  updateProductById(id, changes) {
     const index = this.products.findIndex((product) => product.id === id);
-    this.products[index] = product;
+    if (index === -1) {
+      throw new Error('Product not found');
+    }
+    const product = this.products[index];
+    this.products[index] = {
+      ...product,
+      ...changes,
+    };
+    return this.products[index];
   }
 
   deleteProductById(id) {
-    this.products = this.products.filter((product) => product.id !== id);
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index === -1) {
+      throw new Error('Product not found');
+    }
+    this.products.splice(index, 1);
+    return { message: 'Product deleted' };
   }
 }
 module.exports = ProductsService;
