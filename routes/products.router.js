@@ -36,10 +36,21 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const body = req.body;
-  res.json({
-    message: 'created',
-    data: body,
-  });
+  const newProduct = services.createProduct(body);
+  res.status(201).json(newProduct);
+});
+
+router.patch('/:id', (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  const product = services.updateProductById(parseInt(id), body);
+  res.json(product);
+});
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  const rta = services.deleteProductById(parseInt(id));
+  res.json(rta);
 });
 
 module.exports = router;
