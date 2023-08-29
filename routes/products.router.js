@@ -4,24 +4,37 @@ const router = express.Router();
 
 const services = new ProductsService();
 
-router.get('/', (req, res) => {
-  const products = services.getProducts();
+router.get('/', async (req, res) => {
+  const products = await services.getProducts();
   res.json(products);
 });
 
-router.get('/filter', (req, res) => {
+router.get('/filter', async (req, res) => {
   res.send('Soy un filter');
 });
 
 // Dinamicos
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const product = services.getProductById(parseInt(id));
+  const product = await services.getProductById(parseInt(id));
   res.json(product);
 });
 
-router.post('/', (req, res) => {
+router.patch('/:id', async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  const product = await services.updateProductById(parseInt(id), body);
+  res.json(product);
+});
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await services.deleteProductById(parseInt(id));
+  res.json(product);
+});
+
+router.post('/', async (req, res) => {
   const body = req.body;
   res.json({
     message: 'created',

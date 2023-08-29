@@ -6,7 +6,7 @@ class ProductsService {
     this.addProduct();
   }
 
-  addProduct(product) {
+  async addProduct(product) {
     const limit = 100;
     for (let i = 0; i < limit; i++) {
       this.products.push({
@@ -20,20 +20,27 @@ class ProductsService {
   }
 
   getProducts() {
-    return this.products;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.products);
+        reject(new Error('Error'));
+      }, 5000);
+    });
+    // return this.products;
   }
 
-  getProductById(id) {
+  async getProductById(id) {
     return this.products.find((product) => product.id === id);
   }
 
-  updateProductById(id, product) {
+  async updateProductById(id, product) {
     const index = this.products.findIndex((product) => product.id === id);
     this.products[index] = product;
   }
 
-  deleteProductById(id) {
+  async deleteProductById(id) {
     this.products = this.products.filter((product) => product.id !== id);
   }
 }
+
 module.exports = ProductsService;
