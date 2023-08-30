@@ -6,7 +6,7 @@ class ProductsService {
     this.addProduct();
   }
 
-  async addProduct(product) {
+  addProduct() {
     const limit = 100;
     for (let i = 0; i < limit; i++) {
       this.products.push({
@@ -16,13 +16,12 @@ class ProductsService {
         image: faker.image.imageUrl(),
       });
     }
-    this.products.push(product);
   }
 
-  async createProduct(product) {
+  async createProduct(data) {
     const newProduct = {
       id: faker.datatype.uuid(),
-      ...product,
+      ...data,
     };
     this.products.push(newProduct);
     return newProduct;
@@ -37,7 +36,12 @@ class ProductsService {
   }
 
   async getProductById(id) {
-    return this.products.find((product) => product.id === id);
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index === -1) {
+      throw new Error('Product not found');
+    } else {
+      return this.products.find((product) => product.id === id);
+    }
   }
 
   async updateProductById(id, changes) {

@@ -16,31 +16,14 @@ router.get('/filter', async (req, res) => {
 // Dinamicos
 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  const product = await services.getProductById(id);
-  res.json(product);
-});
-
-router.patch('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
-    const product = await services.updateProductById(id, body);
-    res.json(product);
-  } catch (error) {
-    res.status(404).json({
-      message: 'Product not found',
-    });
-  }
-});
-
-router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await services.getProductById(id);
     res.json(product);
   } catch (error) {
-    next(error);
+    res.status(404).json({
+      message: error.message,
+    });
   }
 });
 
@@ -54,7 +37,7 @@ router.patch('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const body = req.body;
-    const product = await services.updateProductById(parseInt(id), body);
+    const product = await services.updateProductById(id, body);
     res.json(product);
   } catch (error) {
     res.status(404).json({
@@ -63,9 +46,9 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const rta = services.deleteProductById(parseInt(id));
+  const rta = await services.deleteProductById(id);
   res.json(rta);
 });
 
