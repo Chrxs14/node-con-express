@@ -19,7 +19,7 @@ class ProductsService {
     this.products.push(product);
   }
 
-  createProduct(product) {
+  async createProduct(product) {
     const newProduct = {
       id: faker.datatype.uuid(),
       ...product,
@@ -28,14 +28,12 @@ class ProductsService {
     return newProduct;
   }
 
-  getProducts() {
+  async getProducts() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(this.products);
-        reject(new Error('Error'));
       }, 5000);
     });
-    // return this.products;
   }
 
   async getProductById(id) {
@@ -61,7 +59,7 @@ class ProductsService {
       throw new Error('Product not found');
     }
     this.products.splice(index, 1);
-    return { message: 'Product deleted' };
+    return { id };
   }
 }
 
