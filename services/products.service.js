@@ -6,7 +6,7 @@ class ProductsService {
     this.addProduct();
   }
 
-  addProduct(product) {
+  async addProduct(product) {
     const limit = 100;
     for (let i = 0; i < limit; i++) {
       this.products.push({
@@ -19,7 +19,7 @@ class ProductsService {
     this.products.push(product);
   }
 
-  createProduct(product) {
+  async createProduct(product) {
     const newProduct = {
       id: faker.datatype.uuid(),
       ...product,
@@ -28,15 +28,15 @@ class ProductsService {
     return newProduct;
   }
 
-  getProducts() {
+  async getProducts() {
     return this.products;
   }
 
-  getProductById(id) {
+  async getProductById(id) {
     return this.products.find((product) => product.id === id);
   }
 
-  updateProductById(id, changes) {
+  async updateProductById(id, changes) {
     const index = this.products.findIndex((product) => product.id === id);
     if (index === -1) {
       throw new Error('Product not found');
@@ -49,13 +49,13 @@ class ProductsService {
     return this.products[index];
   }
 
-  deleteProductById(id) {
+  async deleteProductById(id) {
     const index = this.products.findIndex((product) => product.id === id);
     if (index === -1) {
       throw new Error('Product not found');
     }
     this.products.splice(index, 1);
-    return { message: 'Product deleted' };
+    return { id };
   }
 }
 module.exports = ProductsService;

@@ -1,5 +1,6 @@
 const express = require('express');
 const ProductsService = require('../services/products.service');
+const { tr } = require('@faker-js/faker');
 const router = express.Router();
 
 const services = new ProductsService();
@@ -15,10 +16,14 @@ router.get('/filter', (req, res) => {
 
 // Dinamicos
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  const product = services.getProductById(parseInt(id));
-  res.json(product);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await services.getProductById(id);
+    res.json(product);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post('/', (req, res) => {
@@ -28,10 +33,16 @@ router.post('/', (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const product = services.updateProductById(parseInt(id), body);
-  res.json(product);
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const product = services.updateProductById(parseInt(id), body);
+    res.json(product);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
 });
 
 router.delete('/:id', (req, res) => {
