@@ -29,7 +29,11 @@ class ProductsService {
   }
 
   async getProducts() {
-    return this.products;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.products);
+      }, 5000);
+    });
   }
 
   async getProductById(id) {
@@ -58,4 +62,5 @@ class ProductsService {
     return { id };
   }
 }
+
 module.exports = ProductsService;
