@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
   res.json(products);
 });
 
-router.get('/filter', async (req, res) => {
-  res.send('Soy un filter');
-});
+// router.get('/filter', async (req, res) => {
+//   res.send('Soy un filter');
+// });
 
 // Dinamicos
 
