@@ -1,6 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
+const categoryNames = ['Fruits', 'Vegetables', 'Meat', 'Fish', 'Dairy'];
+
 class CateroriesService {
   constructor() {
     this.categories = [];
@@ -8,19 +10,19 @@ class CateroriesService {
   }
 
   addCategories() {
-    const limit = 100;
+    const limit = 5;
 
     for (let i = 0; i < limit; i++) {
       this.categories.push({
-        id: faker.datatype.uuid(),
-        name: faker.commerce.caterogyName(),
+        id: faker.string.uuid(),
+        name: categoryNames[i],
       });
     }
   }
 
   async createCategories(data) {
     const newCategory = {
-      id: faker.datatype.uuid(),
+      id: faker.string.uuid(),
       ...data,
     };
     this.categories.push(newCategory);
@@ -29,9 +31,7 @@ class CateroriesService {
 
   async getCategories() {
     return new Promise((resolve) => {
-      setTimeout(() => {
         resolve(this.categories);
-      }, 3000);
     });
   }
 
